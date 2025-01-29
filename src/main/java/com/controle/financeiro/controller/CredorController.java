@@ -1,5 +1,6 @@
 package com.controle.financeiro.controller;
 
+import com.controle.financeiro.dto.CredorDTO;
 import com.controle.financeiro.model.Credor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,40 +10,38 @@ import com.controle.financeiro.service.CredorService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/credores")
+@RequestMapping("/credores")
 public class CredorController {
 
     @Autowired
     private CredorService credorService;
 
-    // Criar Credor (POST)
+    // Cria um novo credor (POST)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Credor criarCredor(@RequestBody Credor credor) {
-        return credorService.salvarCredor(credor);
+    public CredorDTO criarCredor(@RequestBody CredorDTO credorDTO) {
+        return credorService.salvarCredor(credorDTO);
     }
 
-    // Listar Todos (GET)
+    // Lista todos (GET)
     @GetMapping
-    public List<Credor> listarTodos() {
+    public List<CredorDTO> listarTodos() {
         return credorService.listarTodos();
     }
 
-    // Buscar por ID (GET)
+    // Busca por ID (GET)
     @GetMapping("/{id}")
-    public Credor buscarPorId(@PathVariable Long id) {
+    public CredorDTO buscarPorId(@PathVariable Long id) {
         return credorService.buscarPorId(id);
     }
 
-    // Atualizar Credor (PUT)
+    // Atualiza um credor (PUT)
     @PutMapping("/{id}")
-    public Credor atualizarCredor(@PathVariable Long id, @RequestBody Credor credorAtualizado) {
-        Credor credorExistente = credorService.buscarPorId(id);
-        credorExistente.setNome(credorAtualizado.getNome());
-        return credorService.salvarCredor(credorExistente);
+    public CredorDTO atualizarCredor(@PathVariable Long id, @RequestBody CredorDTO credorDTO) {
+        return credorService.atualizarCredor(id, credorDTO);
     }
 
-    // Excluir Credor (DELETE)
+    // Exclui um credor (DELETE)
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluirCredor(@PathVariable Long id) {
