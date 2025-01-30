@@ -11,6 +11,7 @@ public class Compra extends Throwable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "credor_id", nullable = false)
     private Credor credor;
     private String descricao;
     private LocalDate data;
@@ -48,6 +49,10 @@ public class Compra extends Throwable {
         } else {
             this.quantidadeParcelas = null; // Ignora o valor se não for PARCELADO
         }
+    }
+
+    public Compra() {
+
     }
 
 
@@ -128,5 +133,11 @@ public class Compra extends Throwable {
         this.vencimento = vencimento;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

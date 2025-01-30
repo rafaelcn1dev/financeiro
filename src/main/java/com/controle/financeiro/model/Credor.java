@@ -1,26 +1,28 @@
 package com.controle.financeiro.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Credor {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
+    // Relação One-to-Many com Compra
+    @OneToMany(mappedBy = "credor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Compra> compras = new ArrayList<>();
 
-    public Credor() {
-    }
-    public Credor(Long id, String nome) {
-        this.id = id;
+    // Construtores, Getters e Setters
+    public Credor() {}
+
+    public Credor(String nome) {
         this.nome = nome;
     }
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -37,11 +39,22 @@ public class Credor {
         this.nome = nome;
     }
 
-    @Override
-    public String toString() {
-        return "Credor{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                '}';
+    public List<Compra> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(List<Compra> compras) {
+        this.compras = compras;
+    }
+
+    // Método auxiliar para adicionar/remover compras
+    public void addCompra(Compra compra) {
+        getCompras().add(compra);
+        compra.setCredor(this);
+    }
+
+    public void removeCompra(Compra compra) {
+        getCompras().remove(compra);
+        compra.setCredor(null);
     }
 }
