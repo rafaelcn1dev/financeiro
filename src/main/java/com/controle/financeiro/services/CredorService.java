@@ -23,6 +23,12 @@ public class CredorService {
         return credorRepository.findAll();
     }
 
+    public Credor buscarCredorPorId(Long id) {
+        logger.info("Método buscarCredorPorId executado. ID={}", id);
+        return credorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Credor com ID " + id + " não encontrado."));
+    }
+
     public Credor inserirCredor(Credor credor) {
         if (credorRepository.existsByNome(credor.getNome())) {
             throw new IllegalArgumentException("Já existe um credor com o nome: " + credor.getNome());

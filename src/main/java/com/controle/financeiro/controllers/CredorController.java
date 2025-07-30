@@ -24,6 +24,12 @@ public class CredorController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{id}")
+    public CredorDTO buscarCredorPorId(@PathVariable Long id) {
+        Credor credor = credorService.buscarCredorPorId(id);
+        return toDTO(credor);
+    }
+
     @PostMapping
     public CredorDTO inserirCredor(@Valid @RequestBody CredorDTO credorDTO) {
         Credor credor = toEntity(credorDTO);
