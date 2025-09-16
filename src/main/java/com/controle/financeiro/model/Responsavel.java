@@ -14,6 +14,15 @@ public class Responsavel {
 
     private String nome;
 
+    public Responsavel(String nome) {
+        this.nome = nome;
+    }
+
+    public Responsavel() {
+
+    }
+
+
     public Long getId() {
         return id;
     }

@@ -16,6 +16,15 @@ public class Credor {
 
     private Integer diaDeVencimento;
 
+    public Credor(String nome, Integer diaDeVencimento) {
+        this.nome = nome;
+        setDiaDeVencimento(diaDeVencimento);
+    }
+
+    public Credor() {
+
+    }
+
     // Getters e Setters
     public Long getId() {
         return id;
