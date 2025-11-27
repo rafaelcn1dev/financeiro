@@ -5,6 +5,7 @@ public class CredorDTO {
     private Long id;
     private String nome;
     private Integer diaDeVencimento;
+    private Integer melhorDiaDeCompra;
 
     // Getters e Setters
     public Long getId() {
@@ -29,5 +30,13 @@ public class CredorDTO {
 
     public void setDiaDeVencimento(Integer diaDeVencimento) {
         this.diaDeVencimento = diaDeVencimento;
+    }
+
+    public Integer getMelhorDiaDeCompra() {
+        return melhorDiaDeCompra;
+    }
+
+    public void setMelhorDiaDeCompra(Integer melhorDiaDeCompra) {
+        this.melhorDiaDeCompra = melhorDiaDeCompra;
     }
 }

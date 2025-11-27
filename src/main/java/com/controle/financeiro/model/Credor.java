@@ -16,9 +16,12 @@ public class Credor {
 
     private Integer diaDeVencimento;
 
-    public Credor(String nome, Integer diaDeVencimento) {
+    private Integer melhorDiaDeCompra;
+
+    public Credor(String nome, Integer diaDeVencimento, Integer melhorDiaDeCompra) {
         this.nome = nome;
-        setDiaDeVencimento(diaDeVencimento);
+        this.diaDeVencimento = diaDeVencimento;
+        this.melhorDiaDeCompra = melhorDiaDeCompra;
     }
 
     public Credor() {
@@ -51,6 +54,17 @@ public class Credor {
             throw new IllegalArgumentException("O dia de vencimento deve estar entre 1 e 31.");
         }
         this.diaDeVencimento = diaDeVencimento;
+    }
+
+    public Integer getMelhorDiaDeCompra() {
+        return melhorDiaDeCompra;
+    }
+
+    public void setMelhorDiaDeCompra(Integer melhorDiaDeCompra) {
+        if (melhorDiaDeCompra < 1 || melhorDiaDeCompra > 31) {
+            throw new IllegalArgumentException("O dia de vencimento deve estar entre 1 e 31.");
+        }
+        this.melhorDiaDeCompra = melhorDiaDeCompra;
     }
 
 }

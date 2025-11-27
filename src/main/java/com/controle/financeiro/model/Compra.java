@@ -16,6 +16,7 @@ public class Compra {
     private Credor credor;
     private String descricao;
     private Date dataCompra;
+    private Date dataCobranca;
     private Double valor;
     private int parcela;
     private int parcelas;
@@ -112,5 +113,13 @@ public class Compra {
 
     public void setResponsavel(Responsavel responsavel) {
         this.responsavel = responsavel;
+    }
+
+    public Date getDataCobranca() {
+        return dataCobranca;
+    }
+
+    public void setDataCobranca(Date dataCobranca) {
+        this.dataCobranca = dataCobranca;
     }
 }

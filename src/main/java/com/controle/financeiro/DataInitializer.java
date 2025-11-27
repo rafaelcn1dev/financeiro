@@ -25,9 +25,9 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         List<Credor> credores = List.of(
-                new Credor("Banco do Brasil", 1),
-                new Credor("C6", 8),
-                new Credor("Amazon", 5)
+                new Credor("Banco do Brasil", 1, 20),
+                new Credor("C6", 8, 4),
+                new Credor("Amazon", 5, 25)
         );
 
         for (Credor credor : credores) {
