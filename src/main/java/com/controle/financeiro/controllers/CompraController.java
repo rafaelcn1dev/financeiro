@@ -11,7 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -41,10 +41,11 @@ public class CompraController {
         dto.setId(compra.getId());
         dto.setDescricao(compra.getDescricao());
         dto.setValor(compra.getValor());
-        //dto.setDataCompra(compra.getDataCompra());
+        dto.setDataCompra(compra.getDataCompra());
+        dto.setDataCobranca(compra.getDataCobranca());
         dto.setParcela(compra.getParcela());
         dto.setParcelas(compra.getParcelas());
-        //dto.setRestante(compra.getRestante());
+        dto.setRestante(compra.getRestante());
         dto.setVencimento(compra.getVencimento());
         dto.setSituacao(compra.getSituacao());
         dto.setCredor(compra.getCredor());
@@ -78,12 +79,7 @@ public class CompraController {
                 Compra compra = toEntity(compraDTO);
                 compra.setParcela(i + 1);
                 compra.setRestante(compra.getParcelas() - compra.getParcela() + 1);
-                // usa LocalDate direto do DTO (sem timezone)
-                //LocalDate dataDaCompra = Date.valueOf(String.valueOf(compraDTO.getDataCompra())).toLocalDate();
-                // grava como java.sql.Date (sem deslocamento de timezone na lógica de data)
-                //compra.setDataCompra(Date.valueOf(dataDaCompra));
-                //Date dataCobranca = calcularDataCobranca(dataDaCompra, compraDTO.getCredor(), compra.getParcela());
-                //compra.setDataCobranca(dataCobranca);
+                compra.setDataCobranca(calcularDataCobranca(compra.getDataCompra(), compra.getCredor(), compra.getParcela()));
                 listaPagamentoCompraParcelada.add(compra);
             }
 
@@ -93,17 +89,20 @@ public class CompraController {
 
 
 
-    private Date calcularDataCobranca(LocalDate dataDaCompra, Credor credor, int parcela) {
+    private Date calcularDataCobranca(Date dataDaCompra, Credor credor, int parcela) {
+        LocalDate data = dataDaCompra.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
         Integer melhorDia = credor != null ? credor.getMelhorDiaDeCompra() : null;
-        int diaCompra = dataDaCompra.getDayOfMonth();
+        int diaCompra = data.getDayOfMonth();
         if(diaCompra >= melhorDia) {
             assert credor != null;
-            LocalDate dataParcela = dataDaCompra.plusMonths(parcela + 1).withDayOfMonth(credor.getDiaDeVencimento());
-            return Date.valueOf(dataParcela);
+            LocalDate dataParcela = data.plusMonths(parcela + 1).withDayOfMonth(credor.getDiaDeVencimento());
+            return Date.from(dataParcela.atStartOfDay(ZoneId.systemDefault()).toInstant());
         } else {
             assert credor != null;
-            LocalDate dataParcela = dataDaCompra.plusMonths(parcela).withDayOfMonth(credor.getDiaDeVencimento());
-            return Date.valueOf(dataParcela);
+            LocalDate dataParcela = data.plusMonths(parcela).withDayOfMonth(credor.getDiaDeVencimento());
+            return Date.from(dataParcela.atStartOfDay(ZoneId.systemDefault()).toInstant());
         }
     }
 
@@ -112,8 +111,8 @@ public class CompraController {
         compra.setId(compraDTO.getId());
         compra.setDescricao(compraDTO.getDescricao());
         compra.setValor(compraDTO.getValor());
-        //compra.setDataCompra(compraDTO.getDataCompra() != null ? Date.valueOf(compraDTO.getDataCompra().toLocalDate()) : null);
-        //compra.setDataCobranca(compraDTO.getDataCobranca() != null ? Date.valueOf(compraDTO.getDataCobranca().toLocalDate()) : null);
+        compra.setDataCompra(compraDTO.getDataCompra());
+        compra.setDataCobranca(compraDTO.getDataCobranca());
         compra.setParcela(compraDTO.getParcela());
         compra.setParcelas(compraDTO.getParcelas());
         compra.setVencimento(compraDTO.getVencimento());
