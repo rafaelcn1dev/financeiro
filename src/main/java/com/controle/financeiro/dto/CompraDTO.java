@@ -19,6 +19,7 @@ public class CompraDTO {
     private int parcela;
     private int parcelas;
     private int restante;
+    private int compraPai;
     private int vencimento;
     private String situacao;
     private Responsavel responsavel;
@@ -117,5 +118,13 @@ public class CompraDTO {
 
     public void setDataCobranca(Date dataCobranca) {
         this.dataCobranca = dataCobranca;
+    }
+
+    public int getCompraPai() {
+        return compraPai;
+    }
+
+    public void setCompraPai(int compraPai) {
+        this.compraPai = compraPai;
     }
 }

@@ -21,6 +21,7 @@ public class Compra {
     private int parcela;
     private int parcelas;
     private int restante;
+    private int compraPai;
     private int vencimento;
     private String situacao;
     @ManyToOne
@@ -121,5 +122,13 @@ public class Compra {
 
     public void setDataCobranca(Date dataCobranca) {
         this.dataCobranca = dataCobranca;
+    }
+
+    public int getCompraPai() {
+        return compraPai;
+    }
+
+    public void setCompraPai(int compraPai) {
+        this.compraPai = compraPai;
     }
 }
