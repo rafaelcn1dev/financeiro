@@ -36,19 +36,19 @@ public class CompraService {
         return CompraSalvo;
     }
 
-    public Compra editarCompra(Long id, Compra CompraAtualizado) {
-        logger.info("Método editarCompra executado. ID={}", id);
-        Compra CompraExistente = compraRepository.findById(id)
+    public Compra editarCompra(Compra compraAtualizado) {
+        logger.info("Método editarCompra executado. ID={}", compraAtualizado.getId());
+        Compra compraExistente = compraRepository.findById(compraAtualizado.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Compra não encontrado."));
         // Atualiza os campos necessários
-        CompraExistente.setDescricao(CompraAtualizado.getDescricao());
-        CompraExistente.setValor(CompraAtualizado.getValor());
-        CompraExistente.setDataCompra(CompraAtualizado.getDataCompra());
-        CompraExistente.setCredor(CompraAtualizado.getCredor());
-        CompraExistente.setParcelas(CompraAtualizado.getParcelas());
-        Compra CompraEditado = compraRepository.save(CompraExistente);
-        logger.info("Compra editado com sucesso. ID={}", CompraEditado.getId());
-        return CompraEditado;
+        compraExistente.setDescricao(compraAtualizado.getDescricao());
+        compraExistente.setValor(compraAtualizado.getValor());
+        compraExistente.setDataCompra(compraAtualizado.getDataCompra());
+        compraExistente.setCredor(compraAtualizado.getCredor());
+        compraExistente.setParcelas(compraAtualizado.getParcelas());
+        Compra compraEditado = compraRepository.save(compraExistente);
+        logger.info("Compra editado com sucesso. ID={}", compraEditado.getId());
+        return compraEditado;
     }
 
     public void deletarCompra(Long id) {

@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
+@SequenceGenerator(name = "compra_seq", sequenceName = "compra_seq", allocationSize = 1)
 public class Compra {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "compra_seq")
     private Long id;
 
     @ManyToOne
@@ -21,12 +23,20 @@ public class Compra {
     private int parcela;
     private int parcelas;
     private int restante;
-    private int compraPai;
+    private Long compraPai;
     private int vencimento;
     private String situacao;
     @ManyToOne
     @JoinColumn(name = "responsavel_id")
     private Responsavel responsavel;
+
+  /*  @PrePersist
+    public void prePersist() {
+        // com SEQUENCE o provedor geralmente já atribui o id antes do callback
+        if (compraPai == null) {
+            compraPai = id;
+        }
+    }*/
 
     public Long getId() {
         return id;
@@ -124,11 +134,11 @@ public class Compra {
         this.dataCobranca = dataCobranca;
     }
 
-    public int getCompraPai() {
+    public Long getCompraPai() {
         return compraPai;
     }
 
-    public void setCompraPai(int compraPai) {
+    public void setCompraPai(Long compraPai) {
         this.compraPai = compraPai;
     }
 }

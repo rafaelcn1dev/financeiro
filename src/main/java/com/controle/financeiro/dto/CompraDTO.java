@@ -19,7 +19,7 @@ public class CompraDTO {
     private int parcela;
     private int parcelas;
     private int restante;
-    private int compraPai;
+    private Long compraPai;
     private int vencimento;
     private String situacao;
     private Responsavel responsavel;
@@ -120,11 +120,11 @@ public class CompraDTO {
         this.dataCobranca = dataCobranca;
     }
 
-    public int getCompraPai() {
+    public Long getCompraPai() {
         return compraPai;
     }
 
-    public void setCompraPai(int compraPai) {
+    public void setCompraPai(Long compraPai) {
         this.compraPai = compraPai;
     }
 }

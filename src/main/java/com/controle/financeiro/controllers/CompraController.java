@@ -45,6 +45,7 @@ public class CompraController {
         dto.setDataCobranca(compra.getDataCobranca());
         dto.setParcela(compra.getParcela());
         dto.setParcelas(compra.getParcelas());
+        dto.setCompraPai(compra.getCompraPai());
         dto.setRestante(compra.getRestante());
         dto.setVencimento(compra.getVencimento());
         dto.setSituacao(compra.getSituacao());
@@ -57,17 +58,20 @@ public class CompraController {
     public CompraDTO inserirCompra(@Valid @RequestBody CompraDTO compraDTO) {
         Credor credor = this.credorService.buscarCredorPorId(compraDTO.getCredor().getId());
         compraDTO.setCredor(credor);
+        Responsavel responsavel = this.responsavelService.buscarResponsavelPorId(compraDTO.getResponsavel().getId());
+        compraDTO.setResponsavel(responsavel);
         List<Compra> compras = comprasParceladas(compraDTO);
+
         if (!compras.isEmpty()) {
-            List<Compra> comprasSalvas = compras.stream().map(compra -> {
-                Double valorDaParcela = compraDTO.getValor() / compra.getParcelas();
-                compra.setValor(valorDaParcela);
-                compra.setCredor(credor);
-                Responsavel responsavel = this.responsavelService.buscarResponsavelPorId(compraDTO.getResponsavel().getId());
-                compra.setResponsavel(responsavel);
-                return compraService.inserirCompra(compra);
-            }).collect(Collectors.toList());
-            return toDTO(comprasSalvas.get(0)); // Retorna a primeira compra salva como exemplo
+            Long compraPai = 0L;
+            if(compras.get(0).getId() == null) {
+                Compra inseriredCompra = compraService.inserirCompra(compras.get(0));
+                compraPai = inseriredCompra.getId();
+            }
+            for (Compra compra : compras) {
+                compra.setCompraPai(compraPai);
+                compraService.inserirCompra(compra);
+            }
         }
         return compraDTO;
     }
@@ -80,6 +84,8 @@ public class CompraController {
                 compra.setParcela(i + 1);
                 compra.setRestante(compra.getParcelas() - compra.getParcela() + 1);
                 compra.setDataCobranca(calcularDataCobranca(compra.getDataCompra(), compra.getCredor(), compra.getParcela()));
+                Double valorDaParcela = compraDTO.getValor() / compra.getParcelas();
+                compra.setValor(valorDaParcela);
                 listaPagamentoCompraParcelada.add(compra);
             }
 
@@ -115,6 +121,7 @@ public class CompraController {
         compra.setDataCobranca(compraDTO.getDataCobranca());
         compra.setParcela(compraDTO.getParcela());
         compra.setParcelas(compraDTO.getParcelas());
+        compra.setCompraPai(compra.getCompraPai());
         compra.setVencimento(compraDTO.getVencimento());
         compra.setSituacao(compraDTO.getSituacao());
         compra.setCredor(compraDTO.getCredor());
