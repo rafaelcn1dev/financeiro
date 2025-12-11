@@ -76,6 +76,11 @@ public class CompraController {
         return compraDTO;
     }
 
+    @GetMapping("/{idCompraPai}")
+    public List<CompraDTO> listarComprasPorIdCompraPai(@PathVariable Long idCompraPai) {
+        return compraService.buscarComprasPorIdCompraPai(idCompraPai).stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
     private List<Compra> comprasParceladas(CompraDTO compraDTO) {
         ArrayList<Compra> listaPagamentoCompraParcelada = new ArrayList<>();
         if (compraDTO.getParcelas() > 0) {

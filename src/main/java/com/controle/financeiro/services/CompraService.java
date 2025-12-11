@@ -29,6 +29,20 @@ public class CompraService {
                 .orElseThrow(() -> new IllegalArgumentException("Compra com ID " + id + " não encontrado."));
     }
 
+    public List<Compra> buscarComprasPorIdCompraPai(Long compraPai) {
+        logger.info("Método buscarComprasPorIdCompraPai executado. ID={}", compraPai);
+
+        if (!compraRepository.existsById(compraPai)) {
+            throw new IllegalArgumentException("Compra pai com ID " + compraPai + " não encontrada.");
+        }
+
+        List<Compra> compras = compraRepository.findByCompraPai(compraPai);
+        if (compras.isEmpty()) {
+            logger.info("Nenhuma parcela encontrada para compraPai ID={}", compraPai);
+        }
+        return compras;
+    }
+
     public Compra inserirCompra(Compra Compra) {
         logger.info("Método inserirCompra executado.");
         Compra CompraSalvo = compraRepository.save(Compra);
